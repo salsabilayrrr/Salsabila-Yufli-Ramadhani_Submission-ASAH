@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temp
+*.log
+notebook_source.py
+
+# Large files generated
+dashboard/trend_monthly.png
+dashboard/top_category.png
+dashboard/delivery_analysis.png
+dashboard/rfm_analysis.png
+dashboard/state_revenue.png
