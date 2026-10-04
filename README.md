@@ -28,14 +28,13 @@ submission/
 │   └── main_data.csv       ← Dataset gabungan yang sudah dibersihkan
 ├── data/
 │   ├── customers_dataset.csv
-│   ├── geolocation_dataset.csv
-│   ├── order_items_dataset.csv
 │   ├── order_payments_dataset.csv
-│   ├── order_reviews_dataset.csv
-│   ├── orders_dataset.csv
 │   ├── product_category_name_translation.csv
 │   ├── products_dataset.csv
 │   └── sellers_dataset.csv
+│   *(File besar seperti orders, order_items, order_reviews, geolocation
+│    tidak disertakan karena melebihi batas upload. Download dari Kaggle:
+│    https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)*
 ├── notebook.ipynb          ← Notebook analisis lengkap
 ├── README.md               ← File ini
 ├── requirements.txt        ← Daftar library yang digunakan
