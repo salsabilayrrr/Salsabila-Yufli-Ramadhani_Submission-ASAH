@@ -345,10 +345,11 @@ with tab2:
 
     fig, ax = plt.subplots(figsize=(12, max(5, top_n*0.5)), facecolor='#1e2130')
     ax.set_facecolor('#1e2130')
-    palette = sns.color_palette('Blues_r', top_n)
     y_labels = top_cats['product_category_name_english'].values[::-1]
     x_data   = x_vals.values[::-1]
-    bars = ax.barh(y_labels, x_data, color=palette, edgecolor='none')
+    # Warna seragam, highlight hanya nilai tertinggi (bar paling kanan = indeks -1 setelah reverse)
+    bar_colors = ['#FFD43B' if i == len(x_data)-1 else '#4C6EF5' for i in range(len(x_data))]
+    bars = ax.barh(y_labels, x_data, color=bar_colors, edgecolor='none')
     # Add value labels
     for bar, val in zip(bars, x_data):
         ax.text(bar.get_width() + bar.get_width()*0.01, bar.get_y() + bar.get_height()/2,
@@ -358,6 +359,10 @@ with tab2:
     ax.tick_params(colors='#aab4c8')
     for spine in ax.spines.values():
         spine.set_edgecolor('#2d3250')
+    # Legend
+    from matplotlib.patches import Patch
+    ax.legend(handles=[Patch(color='#FFD43B', label='Tertinggi'), Patch(color='#4C6EF5', label='Lainnya')],
+              facecolor='#252840', labelcolor='white', fontsize=8, loc='lower right')
     ax.set_title(f'Top {top_n} Kategori Produk – {x_label} (2017–2018)', color='#e0e6f0', fontsize=13, fontweight='bold')
     plt.tight_layout()
     st.pyplot(fig)
@@ -739,13 +744,21 @@ with tab5:
         with col_geo2:
             st.markdown("##### 📊 Revenue & Pelanggan per State (Top 10)")
             top10 = state_analysis.head(10)
+            n10 = len(top10)
             fig, axes = plt.subplots(2, 1, figsize=(5, 8), facecolor='#1e2130')
             for ax in axes:
                 ax.set_facecolor('#1e2130')
 
+            # Helper: warna seragam, highlight bar tertinggi saja
+            def bar_palette(n, highlight_idx=-1):
+                """highlight_idx=-1 berarti bar terakhir (nilai terbesar setelah[::-1])"""
+                return ['#FFD43B' if i == (n + highlight_idx) % n else '#4C6EF5'
+                        for i in range(n)]
+
             # Revenue chart
-            colors_v = sns.color_palette('viridis', len(top10))
-            axes[0].barh(top10['state'][::-1], top10['total_revenue'][::-1]/1e6, color=colors_v[::-1], edgecolor='none')
+            rev_colors = bar_palette(n10)
+            axes[0].barh(top10['state'][::-1], top10['total_revenue'][::-1]/1e6,
+                         color=rev_colors, edgecolor='none')
             axes[0].set_xlabel('Revenue (Juta R$)', color='#aab4c8', fontsize=8)
             axes[0].tick_params(colors='#aab4c8', labelsize=8)
             for spine in axes[0].spines.values():
@@ -756,8 +769,9 @@ with tab5:
             axes[0].set_title('Top 10 State – Revenue', color='#e0e6f0', fontsize=10, fontweight='bold')
 
             # Customer chart
-            colors_m = sns.color_palette('magma', len(top10))
-            axes[1].barh(top10['state'][::-1], top10['total_customers'][::-1], color=colors_m[::-1], edgecolor='none')
+            cust_colors = bar_palette(n10)
+            axes[1].barh(top10['state'][::-1], top10['total_customers'][::-1],
+                         color=cust_colors, edgecolor='none')
             axes[1].set_xlabel('Jumlah Pelanggan Unik', color='#aab4c8', fontsize=8)
             axes[1].tick_params(colors='#aab4c8', labelsize=8)
             for spine in axes[1].spines.values():
