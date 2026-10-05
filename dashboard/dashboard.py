@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
+import matplotlib.patches as mpatches
 import seaborn as sns
 import folium
 from folium.plugins import HeatMap
@@ -359,10 +360,12 @@ with tab2:
     ax.tick_params(colors='#aab4c8')
     for spine in ax.spines.values():
         spine.set_edgecolor('#2d3250')
-    # Legend
-    from matplotlib.patches import Patch
-    ax.legend(handles=[Patch(color='#FFD43B', label='Tertinggi'), Patch(color='#4C6EF5', label='Lainnya')],
-              facecolor='#252840', labelcolor='white', fontsize=8, loc='lower right')
+    # Legend: highlight bar tertinggi
+    ax.legend(
+        handles=[mpatches.Patch(color='#FFD43B', label='Tertinggi'),
+                 mpatches.Patch(color='#4C6EF5', label='Lainnya')],
+        facecolor='#252840', labelcolor='white', fontsize=8, loc='lower right'
+    )
     ax.set_title(f'Top {top_n} Kategori Produk – {x_label} (2017–2018)', color='#e0e6f0', fontsize=13, fontweight='bold')
     plt.tight_layout()
     st.pyplot(fig)
