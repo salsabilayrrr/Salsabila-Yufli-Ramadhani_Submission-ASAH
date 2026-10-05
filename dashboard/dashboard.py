@@ -686,16 +686,9 @@ with tab5:
 
     @st.cache_data
     def load_geo():
-        geo = pd.read_csv('data/geolocation_dataset.csv')
-        cust = pd.read_csv('data/customers_dataset.csv')
-        geo_uniq = geo.drop_duplicates('geolocation_zip_code_prefix')
-        merged = cust.merge(
-            geo_uniq[['geolocation_zip_code_prefix','geolocation_lat','geolocation_lng']],
-            left_on='customer_zip_code_prefix',
-            right_on='geolocation_zip_code_prefix',
-            how='inner'
-        )
-        return merged
+        # Membaca file geo_customers.csv yang sudah di-pre-process
+        # (merge customers + geolocation, sudah disimpan di folder dashboard/)
+        return pd.read_csv('dashboard/geo_customers.csv')
 
     try:
         customers_geo = load_geo()
