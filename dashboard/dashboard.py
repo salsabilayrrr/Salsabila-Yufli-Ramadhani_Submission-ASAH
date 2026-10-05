@@ -741,19 +741,12 @@ with tab5:
 
         with col_geo1:
             st.markdown("##### 🗺️ Heatmap Distribusi Pelanggan di Brazil")
-            # Gunakan file HTML pre-generated dari notebook (konsisten secara visual)
-            geo_html_path = 'dashboard/geospatial_map.html'
-            if os.path.exists(geo_html_path):
-                with open(geo_html_path, 'r', encoding='utf-8') as f:
-                    map_html = f.read()
-            else:
-                # Fallback: generate saat runtime
-                sample = customers_geo.sample(min(3000, len(customers_geo)), random_state=42)
-                m = folium.Map(location=[-14.235, -51.925], zoom_start=4, tiles='CartoDB dark_matter')
-                heat_data = sample[['geolocation_lat','geolocation_lng']].dropna().values.tolist()
-                HeatMap(heat_data, radius=12, blur=18, max_zoom=13,
-                        gradient={0.2:'blue', 0.4:'cyan', 0.6:'lime', 0.8:'orange', 1.0:'red'}).add_to(m)
-                map_html = m.get_root().render()
+            sample = customers_geo.sample(min(3000, len(customers_geo)), random_state=42)
+            m = folium.Map(location=[-14.235, -51.925], zoom_start=4, tiles='CartoDB dark_matter')
+            heat_data = sample[['geolocation_lat','geolocation_lng']].dropna().values.tolist()
+            HeatMap(heat_data, radius=12, blur=18, max_zoom=13,
+                    gradient={0.2:'blue', 0.4:'cyan', 0.6:'lime', 0.8:'orange', 1.0:'red'}).add_to(m)
+            map_html = m.get_root().render()
             components.html(map_html, width=700, height=450, scrolling=False)
 
         with col_geo2:
