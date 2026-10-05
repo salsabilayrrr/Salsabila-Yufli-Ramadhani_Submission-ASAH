@@ -694,9 +694,12 @@ with tab5:
 
     @st.cache_data
     def load_geo():
-        # Membaca file geo_customers.csv yang sudah di-pre-process
-        # (merge customers + geolocation, sudah disimpan di folder dashboard/)
-        return pd.read_csv('dashboard/geo_customers.csv')
+        # Membaca kolom geolocation langsung dari main_data.csv
+        # (main_data.csv sudah berisi kolom geolocation_lat & geolocation_lng)
+        df = pd.read_csv('dashboard/main_data.csv',
+                         usecols=['customer_unique_id','customer_state',
+                                  'customer_city','geolocation_lat','geolocation_lng'])
+        return df.dropna(subset=['geolocation_lat','geolocation_lng'])
 
     try:
         customers_geo = load_geo()
