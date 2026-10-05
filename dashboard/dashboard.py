@@ -7,7 +7,7 @@ import matplotlib.patches as mpatches
 import seaborn as sns
 import folium
 from folium.plugins import HeatMap
-from streamlit_folium import st_folium
+import streamlit.components.v1 as components
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -745,7 +745,9 @@ with tab5:
             heat_data = sample[['geolocation_lat','geolocation_lng']].dropna().values.tolist()
             HeatMap(heat_data, radius=12, blur=18, max_zoom=13,
                     gradient={0.2:'blue', 0.4:'cyan', 0.6:'lime', 0.8:'orange', 1.0:'red'}).add_to(m)
-            st_folium(m, width=700, height=450)
+            # Render folium map as full HTML and embed via iframe (reliable on Streamlit Cloud)
+            map_html = m.get_root().render()
+            components.html(map_html, width=700, height=450, scrolling=False)
 
         with col_geo2:
             st.markdown("##### 📊 Revenue & Pelanggan per State (Top 10)")
