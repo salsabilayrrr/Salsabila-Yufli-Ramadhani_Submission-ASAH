@@ -347,7 +347,7 @@ with tab2:
     ax.set_facecolor('#1e2130')
     y_labels = top_cats['product_category_name_english'].values[::-1]
     x_data   = x_vals.values[::-1]
-    # Warna seragam, highlight hanya nilai tertinggi (bar paling kanan = indeks -1 setelah reverse)
+    # Warna seragam; setelah [::-1] data ASC -> nilai terbesar di index terakhir (bar BAWAH = terpanjang)
     bar_colors = ['#FFD43B' if i == len(x_data)-1 else '#4C6EF5' for i in range(len(x_data))]
     bars = ax.barh(y_labels, x_data, color=bar_colors, edgecolor='none')
     # Add value labels
@@ -749,11 +749,9 @@ with tab5:
             for ax in axes:
                 ax.set_facecolor('#1e2130')
 
-            # Helper: warna seragam, highlight bar tertinggi saja
-            def bar_palette(n, highlight_idx=-1):
-                """highlight_idx=-1 berarti bar terakhir (nilai terbesar setelah[::-1])"""
-                return ['#FFD43B' if i == (n + highlight_idx) % n else '#4C6EF5'
-                        for i in range(n)]
+            # Warna seragam; setelah [::-1] data ASC -> nilai terbesar di index terakhir (bar BAWAH)
+            def bar_palette(n):
+                return ['#FFD43B' if i == n-1 else '#4C6EF5' for i in range(n)]
 
             # Revenue chart
             rev_colors = bar_palette(n10)
